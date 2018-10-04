@@ -4,22 +4,22 @@ It uses a local cache in SQLite3. Local cache is updated daily by spl_at_tide_db
 
 spl_at_tide_db_update.sh and spl_at_tide_lookup_cli.py
 
-#Prerequisites 
+# Prerequisites 
 jq
 sqlite3
 
-##Installation on Ubuntu 18
+## Installation on Ubuntu 18
 sudo add-apt-repository universe
 sudo apt-get update
 sudo apt-get install jq sqlite3
 
-#How to use
+# How to use
 ## Configuration
 By default DB and TIDE API key are stored in /opt/splunk/cache. If you want to use a different directory change CPATH variable in spl_at_tide_db_update.sh and spl_at_tide_lookup_cli.py files
-###Cache dir
-###API key
-###Crontab
-###External Lookup
+### Cache dir
+### API key
+### Crontab
+### External Lookup
 
-##Usage examples
+## Usage examples
 
