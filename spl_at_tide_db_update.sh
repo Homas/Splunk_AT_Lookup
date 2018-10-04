@@ -1,7 +1,7 @@
 #!/bin/sh
 
 CPATH="/opt/splunk/cache"
-APIKEY=`cat at_api_key.txt`
+APIKEY=`cat $CPATH/at_api_key.txt`
 DATE=`date +%Y%m%d`
 
 if [ -z "$APIKEY" ]; then
