@@ -71,6 +71,7 @@ CreateTIDEDB () {
 .import ${IPFILE} combo
 .import ${URLFILE} combo
 CREATE INDEX idx_host on combo (host);
+CREATE INDEX idx_domain on combo (domain);
 CREATE INDEX idx_ip on combo (ip);
 CREATE INDEX idx_url on combo (url);
 EOF
