@@ -4,6 +4,8 @@ It uses a local cache in SQLite3. The local cache is updated by spl_at_tide_db_u
 
 spl_at_tide_db_update.sh and spl_at_tide_lookup_cli.py
 
+<p align="center"><img src="https://github.com/Homas/Splunk_AT_Lookup/blob/master/img/img/event_enrichment.png"></p>
+
 # Prerequisites 
 * jq
 * sqlite3
