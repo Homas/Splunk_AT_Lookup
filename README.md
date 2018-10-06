@@ -1,4 +1,4 @@
-# Splunk Infolbox TIDE External Lookup tool
+# Splunk Infolbox TIDE Threat Lookup tool
 spl_at_tide_lookup_cli.py is an external lookup tool for Splunk which returns a threat property for ip-addresses, hostnames and domains. 
 It uses a local cache in SQLite3. The local cache is updated by spl_at_tide_db_update.sh script which should be periodically executed by cron.   
 
@@ -19,8 +19,8 @@ sudo apt-get install jq sqlite3
 
 # How to use
 ## Configuration
-By default DB and TIDE API key are stored in /opt/splunk/cache. If you want to use a different directory change CPATH variable in spl_at_tide_db_update.sh and spl_at_tide_lookup_cli.py files
 ### Cache dir
+DB and TIDE API key are stored in ```/opt/splunk/cache``` by default. If you want to use a different directory change CPATH variable in spl_at_tide_db_update.sh and spl_at_tide_lookup_cli.py files.
 ### API key
 ### Crontab
 ### External Lookup
