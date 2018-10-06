@@ -9,9 +9,11 @@ jq
 sqlite3
 
 ## Installation on Ubuntu 18
+```
 sudo add-apt-repository universe
 sudo apt-get update
 sudo apt-get install jq sqlite3
+```
 
 # How to use
 ## Configuration

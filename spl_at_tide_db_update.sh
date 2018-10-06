@@ -2,7 +2,7 @@
 
 CPATH="/opt/splunk/cache"
 APIKEY=`cat $CPATH/at_api_key.txt`
-DATE=`date +%Y%m%d`
+DATE=`date +%Y%m%d%H%M`
 
 if [ -z "$APIKEY" ]; then
 	echo "Please set API key in the 'at_api_key.txt' file"
@@ -17,16 +17,7 @@ DBTreats="${CPATH}/threat_properties.db"
 
 ### Get active threats for type ${TYPE} via TIDE API ###
 GetActiveThreats(){
-	curl -s -X GET --url "https://platform.activetrust.net:8000/api/data/threats/state/${2}?&data_format=csv" -H "Accept-Encoding:gzip" -u ${APIKEY}: | gunzip - > $1
-	if [ $? -ne 0 ]; then
-		echo "Failed to retrieve data from TIDE for type ${2}"
-		exit 1
-	fi
-}
-
-### Get active threats for type ${TYPE} via TIDE API ###
-GetActiveThreats(){
-	curl -s -X GET --url "https://platform.activetrust.net:8000/api/data/threats/state/${2}?&data_format=csv" -H "Accept-Encoding:gzip" -u ${APIKEY}: | gunzip - > $1
+	curl -s -X GET --url "https://platform.activetrust.net:8000/api/data/threats/state/${2}?field=host,ip,domain,url,property&data_format=csv" -H "Accept-Encoding:gzip" -u ${APIKEY}: | gunzip - > $1
 	if [ $? -ne 0 ]; then
 		echo "Failed to retrieve data from TIDE for type ${2}"
 		exit 1
