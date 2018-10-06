@@ -1,6 +1,6 @@
 # Splunk Infolbox TIDE External Lookup tool
-spl_at_tide_lookup_cli.py is an external lookup tool for Splunk which returns a threat property for ip-addresses, hostnames and domains
-It uses a local cache in SQLite3. Local cache is updated daily by spl_at_tide_db_update.sh script which should be 
+spl_at_tide_lookup_cli.py is an external lookup tool for Splunk which returns a threat property for ip-addresses, hostnames and domains.  
+It uses a local cache in SQLite3. The local cache is updated by spl_at_tide_db_update.sh script which should be periodically executed by cron.   
 
 spl_at_tide_db_update.sh and spl_at_tide_lookup_cli.py
 
