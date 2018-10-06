@@ -5,8 +5,8 @@ It uses a local cache in SQLite3. Local cache is updated daily by spl_at_tide_db
 spl_at_tide_db_update.sh and spl_at_tide_lookup_cli.py
 
 # Prerequisites 
-jq
-sqlite3
+* jq
+* sqlite3
 
 ## Installation on Ubuntu 18
 ```
