@@ -96,6 +96,7 @@ To debug the lookup tool in Search:
 index=* | head 1 | eval domain="eicar.co" | lookup spl_at_lookup host as domain OUTPUT property as "Threat Property" | table domain, "Threat Property"
 ```
 2. Check that the resulting table looks like
+
 | domain  | Threat Property |
 | ------- | ---------------------------- |
 | eicar.co | MaliciousNameserver_Generic |
