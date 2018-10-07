@@ -14,18 +14,18 @@ against and quickly respond to threats.
 <p align="center"><img src="https://github.com/Homas/Splunk_AT_Lookup/blob/master/img/TIDE.png"></p>
 
 ## spl_at_tide_lookup_cli.py
-spl_at_tide_lookup_cli.py is an external lookup tool for Splunk which returns a threat property for ip-addresses, hostnames and domains. 
-It uses a local cache in SQLite3. The local cache is updated by spl_at_tide_db_update.sh script which should be periodically executed by cron.   
-
-spl_at_tide_db_update.sh and spl_at_tide_lookup_cli.py
-
+```spl_at_tide_lookup_cli.py``` is an external lookup tool for Splunk which returns an active threat property (or properties) for ip-addresses, hostnames/domains, URLs.
+You may use the lookup tool to enrich any event/log message which contains an IP-address, domain/hostname or URL. 
+```spl_at_tide_lookup_cli.py``` uses a local cache of all active indicators. The local cache is updated by ```spl_at_tide_db_update.sh``` script which should be periodically executed by Cron.   
 <p align="center"><img src="https://github.com/Homas/Splunk_AT_Lookup/blob/master/img/event_enrichment.png"></p>
+On the screenshot you can see sshd server authentication errors logs which are attributed with threat properties by a source IP address.
 
 # Prerequisites 
+The scripts are using the following utilities:
 * jq
 * sqlite3
 
-## Installation on Ubuntu 18
+## Prerequisites installation on Ubuntu 18.04
 ```
 sudo add-apt-repository universe
 sudo apt-get update
@@ -34,13 +34,35 @@ sudo apt-get install jq sqlite3
 
 # How to use
 ## Configuration
-### Cache dir
-DB and TIDE API key are stored in ```/opt/splunk/cache``` by default. If you want to use a different directory change CPATH variable in spl_at_tide_db_update.sh and spl_at_tide_lookup_cli.py files.
+To use the external lookup tool you need:
+1. Create a database directory (by default ```/opt/splunk/cache```)
+2. Set Infolbox TIDE API KEY in ```$CPATH/at_api_key.txt```
+3. Copy scripts to ```$SPLUNK_HOME/etc/searchscripts``` or ```$SPLUNK_HOME/etc/apps/<app_name>/bin``` and make them executable.
+4. Create a crontab task to automatically update the database
+5. Create an external lookup 
+
+### DB dir
+DB and TIDE API key are stored in ```/opt/splunk/cache``` by default. If you want to use a different directory change CPATH variable in both scripts.
 ### API key
+```$CPATH/at_api_key.txt``` file should contain only Infoblox TIDE API key. No new line, spaces or any other extra charachters are allowed.
 ### Crontab
+The cache database is big enough and it is recommended to update it once a day.
+Below you can find a sample crontab schedule for a script which is located in ```/opt/etc/searchscripts/```. 
+```
+0 * * * *  /opt/etc/searchscripts/spl_at_tide_db_update.sh
+```
+You may also use Splunk scheduler to execute the script.
 ### External Lookup
+You need to set up an external look up with the following parameters:
+- ```Command``` set to ```spl_at_tide_lookup_cli.py ip host url```
+- ```Supported fields``` set to ```ip,host,url,property```
 <p align="center"><img src="https://github.com/Homas/Splunk_AT_Lookup/blob/master/img/spl_external_lookup.png"></p>
 
-
-## Usage examples
+### Splunk documentation
+The Splunk external lookup configuration described in details [here](https://docs.splunk.com/Documentation/Splunk/7.2.0/Knowledge/DefineanexternallookupinSplunkWeb).
+## Examples
+### IP Lookup
+### Domain Lookup
+### URL Lookup
+#Debug
 
