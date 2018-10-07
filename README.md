@@ -84,7 +84,7 @@ To debug the lookup tool in CLI:
 ```
 $ echo -e "ip,host,url,property\n,www.eicar.co,,"|/opt/splunk/bin/splunk cmd python /opt/etc/searchscripts/spl_at_tide_lookup_cli.py
 ```
-3. Check the response
+3. Check the response:
 ```
 ip,host,url,property
 "",eicar.co,"",MaliciousNameserver_Generic
@@ -95,7 +95,7 @@ To debug the lookup tool in Search:
 ```
 index=* | head 1 | eval domain="eicar.co" | lookup spl_at_lookup host as domain OUTPUT property as "Threat Property" | table domain, "Threat Property"
 ```
-2. Check that the resulting table looks like
+2. Check that the resulting table:
 
 | domain  | Threat Property |
 | ------- | ---------------------------- |
