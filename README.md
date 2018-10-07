@@ -76,6 +76,28 @@ Lookup a threat property for a URL in the *URL* field.
 ```
 ... | lookup spl_at_lookup url as URL OUTPUT property as "Threat Property"
 ```
-#Debug
-##CLI
-## Search
+# Debug
+## Debug in CLI
+To debug the lookup tool in CLI:
+1. Login to the Splunk server
+2. Execute the following command as a Splunk user (specify a path to spl_at_tide_lookup_cli.py which is relevant on you server)
+```
+$ echo -e "ip,host,url,property\n,www.eicar.co,,"|/opt/splunk/bin/splunk cmd python /opt/etc/searchscripts/spl_at_tide_lookup_cli.py
+```
+3. Check the response
+```
+ip,host,url,property
+"",eicar.co,"",MaliciousNameserver_Generic
+```
+## Debug in Splunk Search
+To debug the lookup tool in Search:
+1. Execute the following search 
+```
+index=* | head 1 | eval domain="eicar.co" | lookup spl_at_lookup host as domain OUTPUT property as "Threat Property" | table domain, "Threat Property"
+```
+2. Check that the resulting table looks like
+--------------------------------------
+|domain  |   Threat Property         |
+--------------------------------------
+|eicar.co|MaliciousNameserver_Generic|
+--------------------------------------
