@@ -62,17 +62,17 @@ You need to set up an external look up with the following parameters:
 The Splunk external lookup configuration described in details by [this](https://docs.splunk.com/Documentation/Splunk/7.2.0/Knowledge/DefineanexternallookupinSplunkWeb) link.
 ## Examples
 ### IP Lookup
-Lookup a threat property for an IP address in the *address* field.
+Lookup a threat property for an IP address in the **address** field.
 ```
 ... | lookup spl_at_lookup ip as address OUTPUT property as "Threat Property"
 ```
 ### Domain Lookup
-Lookup a threat property for a domain/host in the *domain* field.
+Lookup a threat property for a domain/host in the **domain** field.
 ```
 ... | lookup spl_at_lookup host as domain OUTPUT property as "Threat Property"
 ```
 ### URL Lookup
-Lookup a threat property for a URL in the *URL* field.
+Lookup a threat property for a URL in the **URL** field.
 ```
 ... | lookup spl_at_lookup url as URL OUTPUT property as "Threat Property"
 ```
