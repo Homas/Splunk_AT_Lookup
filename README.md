@@ -59,10 +59,23 @@ You need to set up an external look up with the following parameters:
 <p align="center"><img src="https://github.com/Homas/Splunk_AT_Lookup/blob/master/img/spl_external_lookup.png"></p>
 
 ### Splunk documentation
-The Splunk external lookup configuration described in details [here](https://docs.splunk.com/Documentation/Splunk/7.2.0/Knowledge/DefineanexternallookupinSplunkWeb).
+The Splunk external lookup configuration described in details by [this](https://docs.splunk.com/Documentation/Splunk/7.2.0/Knowledge/DefineanexternallookupinSplunkWeb) link.
 ## Examples
 ### IP Lookup
+Lookup a threat property for an IP address in the *address* field.
+```
+... | lookup spl_at_lookup ip as address OUTPUT property as "Threat Property"
+```
 ### Domain Lookup
+Lookup a threat property for a domain/host in the *domain* field.
+```
+... | lookup spl_at_lookup host as domain OUTPUT property as "Threat Property"
+```
 ### URL Lookup
+Lookup a threat property for a URL in the *URL* field.
+```
+... | lookup spl_at_lookup url as URL OUTPUT property as "Threat Property"
+```
 #Debug
-
+##CLI
+## Search
