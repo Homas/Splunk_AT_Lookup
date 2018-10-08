@@ -12,7 +12,7 @@ DB=CPATH+"/active-threat-intel.db"
 #Threats Descriptions DB
 DBTreats=CPATH+"/threat_properties.db"
 
-f = open(CPATH+"/at_lookup.log", "a") ###Debug log
+#f = open(CPATH+"/at_lookup.log", "a") ###Debug log
 
 #print response header
 print ("ip,host,url,property")
@@ -65,4 +65,4 @@ if outs != "":
 #        print result["ip"]+","+result["host"]+","+result["url"]+","
 
 
-f.close  ###Debug log
+#f.close  ###Debug log
