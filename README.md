@@ -82,7 +82,7 @@ To debug the lookup tool in CLI:
 1. Login to the Splunk server
 2. Execute the following command as a Splunk user (specify a path to spl_at_tide_lookup_cli.py which is relevant on you server)
 ```
-$ echo -e "ip,host,url,property\n,www.eicar.co,,"|/opt/splunk/bin/splunk cmd python /opt/etc/searchscripts/spl_at_tide_lookup_cli.py
+$ echo -e "ip,host,url,property\n,www.eicar.co,,"|/opt/splunk/bin/splunk cmd python $SPLUNK_HOME/etc/searchscripts/spl_at_tide_lookup_cli.py
 ```
 3. Check the response:
 ```

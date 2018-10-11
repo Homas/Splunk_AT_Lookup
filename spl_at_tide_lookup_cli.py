@@ -25,6 +25,8 @@ c_host="null"
 c_domain="null"
 c_url="null"
 c_ip="null"
+c_sdom={}
+c_ioc={}
 
 for result in r:
     if result["ip"] != "":
@@ -36,16 +38,14 @@ for result in r:
     if result["host"] != "":
         c_host+=',"'+result["host"]+'"'
         c_domain+=',"'+result["host"]+'"'
-        subdomains=result["host"].split["."].reverse()
-        s_domain=subdomains[0]
-        for i, label in range(1, subdomains.len()-1):
-            s_domain+=label
-            c_host+=',"'+s_domain+'"'
-            c_domain+=',"'+s_domain+'"'
-            subdomains=result["host"].split(".")[::-1]
-            s_domain=subdomains.pop(0)
-            for label in subdomains:
-                s_domain=label+"."+s_domain
+        if result["host"] not in c_sdom:
+            c_sdom[result["host"]]=result["host"]
+        subdomains=result["host"].split(".")[::-1]
+        s_domain=subdomains.pop(0)
+        for label in subdomains:
+            s_domain=label+"."+s_domain
+            if s_domain not in c_sdom:
+                c_sdom[s_domain]=result["host"] #handle a domain for different subdomains
                 c_host+=',"'+s_domain+'"'
                 c_domain+=',"'+s_domain+'"'
 
@@ -57,6 +57,7 @@ sql = Popen(["/usr/bin/sqlite3","-csv",DB,request], stdout=PIPE)
 outs, errs = sql.communicate()
 if outs != "":
     #f.write(str(datetime.datetime.now())+" Request "+ioctype+" "+result[ioctype]+" response: "+outs.splitlines()[0]+"\n") ###Debug log
+    #TODO parse output. Find unmatched requests (for all indicators). Find FQDNs which were checked by a domain (for HOSTs only)
     print outs
 
 #else:
