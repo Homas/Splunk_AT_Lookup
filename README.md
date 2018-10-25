@@ -47,9 +47,9 @@ DB and TIDE API key are stored in ```/opt/splunk/cache``` by default. If you wan
 ```$CPATH/at_api_key.txt``` file should contain only Infoblox TIDE API key. No new line, spaces or any other extra charachters are allowed.
 ### Crontab
 The cache database is big enough and it is recommended to update it once a day.
-Below you can find a sample crontab schedule for a script which is located in ```/opt/etc/searchscripts/```. 
+Below you can find a sample crontab schedule for a script which is located in ```$SPLUNK_HOME/etc/searchscripts/```. 
 ```
-0 * * * *  /opt/etc/searchscripts/spl_at_tide_db_update.sh
+2 6 * * *  $SPLUNK_HOME/etc/searchscripts/spl_at_tide_db_update.sh
 ```
 You may also use Splunk scheduler to execute the script.
 ### External Lookup
@@ -82,7 +82,7 @@ To debug the lookup tool in CLI:
 1. Login to the Splunk server
 2. Execute the following command as a Splunk user (specify a path to spl_at_tide_lookup_cli.py which is relevant on you server)
 ```
-$ echo -e "ip,host,url,property\n,www.eicar.co,,"|/opt/splunk/bin/splunk cmd python $SPLUNK_HOME/etc/searchscripts/spl_at_tide_lookup_cli.py
+$ echo -e "ip,host,url,property\n,www.eicar.co,,"|$SPLUNK_HOME/bin/splunk cmd python $SPLUNK_HOME/etc/searchscripts/spl_at_tide_lookup_cli.py
 ```
 3. Check the response:
 ```
