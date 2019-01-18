@@ -7,58 +7,35 @@ from subprocess import Popen, PIPE
 import requests
 from requests.auth import HTTPBasicAuth
 
-#Path to DB and debug log
-CPATH="/opt/splunk/cache"
-#Online Infoblox TIDE search and cache of unknown indicators
-TIDESearch=0
+
+CPATH="/opt/splunk/cache" #Path to DB and debug log
+DB=CPATH+"/active-threat-intel.db" #TIDE DB
+DBTreats=CPATH+"/threat_properties.db" #Threats Descriptions DB
+
+header="ip,host,url,property\n" #Response header
+
+TIDE_URL="https://platform.activetrust.net:8000/api/data/threats/state/" #TIDE URL
+TIDE_max=63 #TIDE max indicators online
+
+ch_sub=True #Check all subdomains
+ch_DB=True #Check indicators in DB
 
 #Infoblox TIDE API Key
 with open(CPATH+'/at_api_key.txt', 'r') as f:
     ATTIDE_KEY = f.read().rstrip()
 
-def get_IOC(type,IOC):
-    result=""
-    sql=""
-    pre="" if type=="ip" else "," if type == "host" else ",,"
-    post=",,," if type=="ip" else ",," if type == "host" else ","
-    url='https://platform.activetrust.net:8000/api/data/threats/state/'+type+'?field='+type+',property&data_format=csv&rlimit=10&'+type+'='+IOC
-    response = requests.get(url,auth=HTTPBasicAuth(ATTIDE_KEY, ''))
-    for msg in response.text.encode('utf-8').split('\n')[1:]:
-        line=msg.split(",")
-        if len(line)>1 and line[0] == IOC:
-            result+=pre+IOC+post+line[1]+"\n"
-            sql+='insert into combo ('+type+',property) values("'+IOC+'","'+line[1]+'")'+"\n"
-    return result if result != "" else pre+IOC+post, sql if sql != "" else 'insert into combo ('+type+',property) values("'+IOC+'","")'
-
-
-#TIDE DB
-DB=CPATH+"/active-threat-intel.db"
-#Threats Descriptions DB
-DBTreats=CPATH+"/threat_properties.db"
-#Response header
-header="ip,host,url,property\n"
-#Check all subdomains
-ch_sub=True 
-#TODO Check unmatched requests online
-ch_online=True 
-
 #f = open(CPATH+"/at_lookup.log", "a") ###Debug log
-
-#print response header
-print header
 
 #IOCs are passed via STDIN in CSV format
 infile = sys.stdin
 r = csv.DictReader(infile)
 
-c_host="null"
-c_domain="null"
-c_url="null"
-c_ip="null"
-c_sdom={}
-c_ioc={}
+c_host= c_domain= c_url= c_ip="null"
+c_sdom= {}
+c_ioc= {}
 r_ioc={}
 
+#Prepare lists of indicators
 for result in r:
     if result["ip"] != "":
         c_ip+=',"'+result["ip"]+'"'
@@ -86,11 +63,15 @@ for result in r:
             if result["host"] not in c_sdom[s_domain]:
                 c_sdom[s_domain].append(result["host"])
 
+#print response header
+print header
 
+#check indicators in cache
 request = 'SELECT ip,host,url,property FROM combo WHERE ip in ('+c_ip+') or host in ('+c_host+') or domain in ('+c_domain+') or url in ('+c_url+')'
 #f.write(str(datetime.datetime.now())+" SQL: "+request+"\n") ###Debug log
 sql = Popen(["/usr/bin/sqlite3","-csv",DB,request], stdout=PIPE)
 outs, errs = sql.communicate()
+
 if outs != "":
     #f.write(str(datetime.datetime.now())+" Request "+ioctype+" "+result[ioctype]+" response: "+outs.splitlines()[0]+"\n") ###Debug log
     o = csv.DictReader((header+outs).splitlines())
@@ -113,16 +94,5 @@ if outs != "":
                 print (","+host+",,"+result["property"])
                 if host in r_ioc:
                     del r_ioc[host]
-
-if TIDESearch:
-    update=""
-    for ioc in r_ioc:
-        #print r_ioc[ioc]+" "+ioc
-        res,sqlr=get_IOC(r_ioc[ioc],ioc)
-        update+=sqlr
-        print res
-    
-    sql = Popen(["/usr/bin/sqlite3","-csv",DB,update], stdout=PIPE)
-    outs, errs = sql.communicate()
 
 #f.close  ###Debug log
